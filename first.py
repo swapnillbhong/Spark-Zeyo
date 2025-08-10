@@ -40,24 +40,28 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-print("STARTED")
-
-a = 2
-
-print(a)
-
-b= a + 2
-
-print (b)
-
-c = "zeyobron"
-
-print (c)
-
-d = c + " analytics"
-
-print(d)
-
 lis =[ 1, 2 , 3, 4]
-
+print()
+print("=======Raw list========")
 print(lis)
+print()
+
+rddlis = sc.parallelize(lis)
+print("=======Rrddlis========")
+print(rddlis.collect())
+print()
+
+print("=======addlis========")
+addlis = rddlis.map(  lambda  x : x + 2)
+print(addlis.collect())
+
+print()
+print("=======mullis========")
+mullis = rddlis.map(  lambda  x : x * 10)
+print(mullis.collect())
+
+print()
+print("=======fillis========")
+fillis = rddlis.filter(  lambda  x : x > 2)
+print(fillis.collect())
+
