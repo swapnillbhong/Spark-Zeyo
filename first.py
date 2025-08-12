@@ -65,3 +65,7 @@ print("=======fillis========")
 fillis = rddlis.filter(  lambda  x : x > 2)
 print(fillis.collect())
 
+print()
+print("=======fillis========")
+fillis = rddlis.filter(  lambda  x : x > 2)
+print(fillis.collect())
