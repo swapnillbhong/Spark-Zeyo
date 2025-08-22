@@ -55,3 +55,9 @@ add = rddlist.map( lambda  x : x+ 2)
 print("======== add ======")
 print()
 print(add.collect())
+
+
+multilis = rddlist.map( lambda  x : x * 10)
+print("======== multilis ======")
+print()
+print(multilis.collect())
