@@ -40,4 +40,18 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
-print("okk")
+
+lis = [1, 2, 3, 4]  # list of integer
+print("======== raw list ======")
+print()
+print(lis)   # input data
+
+rddlist = sc.parallelize(lis)
+print("======== rddlist ======")
+print()
+print(rddlist.collect())
+
+add = rddlist.map( lambda  x : x+ 2)
+print("======== add ======")
+print()
+print(add.collect())

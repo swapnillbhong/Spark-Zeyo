@@ -49,3 +49,6 @@ print(b)
 
 c = "zeyobron"
 print(c)
+
+d = c + " analytics"
+print(d)
