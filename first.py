@@ -41,18 +41,11 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-lis = [  1  ,  2  ,  3  ,  4 ]
-print()
-print("=====RAW LIST=====")
-print(lis)
+a = 2    # type of value is integar
+print(a)
 
-rddlis  = sc.parallelize(lis)
-print()
-print("=====rddlis=====")
-print(rddlis.collect())
+b = a + 2  # type of value is integar
+print(b)
 
-
-addlis = rddlis.map(  lambda   x   :   x  +  2   )
-print()
-print("=====addlis=====")
-print(addlis.collect())
+c = "zeyobron"
+print(c)
