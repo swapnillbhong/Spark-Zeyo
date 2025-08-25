@@ -41,14 +41,39 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-a = 2    # type of value is integar
-print(a)
+data = [
 
-b = a + 2  # type of value is integar
-print(b)
+    ("00000", "06-26-2011", 200, "Exercise", "GymnasticsPro", "cash"),
+    ("00001", "05-26-2011", 300, "Exercise", "Weightlifting", "credit"),
+    ("00002", "06-01-2011", 100, "Exercise", "GymnasticsPro", "cash"),
+    ("00003", "06-05-2011", 100, "Gymnastics", "Rings", "credit"),
+    ("00004", "12-17-2011", 300, "Team Sports", "Field", "paytm"),
+    ("00005", "02-14-2011", 200, "Gymnastics", None, "cash")
 
-c = "zeyobron"
-print(c)
+]
+df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
+df.show()
 
-d = c + " analytics"
-print(d)
+
+procdf  =  df.select("tdate" ,"amount")
+procdf.show()
+
+
+
+dropdf = df.drop("tdate","amount")
+dropdf.show()
+
+sincol = df.filter("   category ='Exercise'    ")
+sincol.show()
+
+
+mulcoland = df.filter("    category='Exercise'  and  spendby = 'cash'          ")
+mulcoland.show()
+
+
+mulcolor =  df.filter("    category ='Exercise' or spendby = 'cash'   ")
+mulcolor.show()
+
+
+multicol = df.filter("category in ('Exercise','Gymnastics')")
+multicol.show()
