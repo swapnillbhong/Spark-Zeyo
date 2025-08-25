@@ -42,11 +42,16 @@ spark = SparkSession.builder.getOrCreate()
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
 lis = [ 'zeyobron' , 'zeyo', 'tera']
-print("======== raw list ======")
 print()
+print("======== raw list ======")
 print(lis)   # input data
 
 rddlis = sc.parallelize(lis)
-print("======== rddlis ======")
 print()
+print("======== rddlis ======")
 print(rddlis.collect())
+
+conrdd = rddlis.map( lambda x : x + "Ananlystics")
+print()
+print("======== conrdd ======")
+print(conrdd.collect())
