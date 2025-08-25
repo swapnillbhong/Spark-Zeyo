@@ -55,3 +55,8 @@ conrdd = rddlis.map( lambda x : x + "Ananlystics")
 print()
 print("======== conrdd ======")
 print(conrdd.collect())
+
+rddstr = rddlis.map( lambda  x : x.replace("zeyo","exa"))
+print()
+print("======== rddstr ======")
+print(rddstr .collect())
