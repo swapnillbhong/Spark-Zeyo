@@ -81,3 +81,8 @@ rddflat = sc.parallelize(rddms)
 print()
 print("======== rddflat ======")
 print(rddflat .collect())
+
+rddfm= rddflat.flatMap( lambda  x : x.split("~"))
+print()
+print("======== rddfm ======")
+print(rddfm .collect())
