@@ -45,3 +45,8 @@ lis = [ 'zeyobron' , 'zeyo', 'tera']
 print("======== raw list ======")
 print()
 print(lis)   # input data
+
+rddlis = sc.parallelize(lis)
+print("======== rddlis ======")
+print()
+print(rddlis.collect())
