@@ -60,3 +60,8 @@ rddstr = rddlis.map( lambda  x : x.replace("zeyo","exa"))
 print()
 print("======== rddstr ======")
 print(rddstr .collect())
+
+emrdd = rddlis.map( lambda  x : x.replace("zeyo",""))
+print()
+print("======== emrdd ======")
+print(emrdd .collect())
