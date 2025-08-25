@@ -41,23 +41,7 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-lis = [1, 2, 3, 4]  # list of integer
+lis = [ 'zeyobron' , 'zeyo', 'tera']
 print("======== raw list ======")
 print()
 print(lis)   # input data
-
-rddlist = sc.parallelize(lis)
-print("======== rddlist ======")
-print()
-print(rddlist.collect())
-
-add = rddlist.map( lambda  x : x+ 2)
-print("======== add ======")
-print()
-print(add.collect())
-
-
-multilis = rddlist.map( lambda  x : x * 10)
-print("======== multilis ======")
-print()
-print(multilis.collect())
