@@ -50,3 +50,8 @@ lendata = data.filter( lambda   x : len(x) > 200)
 print()
 print("===== rawdata======")
 lendata.foreach(print)
+
+flatdata = lendata.flatMap( lambda x : x.split(","))
+print()
+print("===== flatdata======")
+flatdata.foreach(print)
