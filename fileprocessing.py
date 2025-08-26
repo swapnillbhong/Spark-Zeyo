@@ -41,5 +41,12 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
+data = sc.textFile("usdata.csv")
+print()
+print("===== rawdata======")
+#print(data.collect())
 
-print("okk")
+lendata = data.filter( lambda   x : len(x) > 200)
+print()
+print("===== rawdata======")
+lendata.foreach(print)
