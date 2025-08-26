@@ -40,36 +40,6 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
-data  =  sc.textFile("state.txt")
-print()
-print("========RAWRDD===========")
-print(data.collect())         #  print(data.collect())
 
 
-flatdata = data.flatMap( lambda  x : x.split("~"))
-print()
-print("========flatdata===========")
-print(flatdata.collect())         #  print(data.collect())
-
-
-statedata = flatdata.filter(lambda x : "State" in x)
-print()
-print("========statedata===========")
-print(statedata.collect())         #  print(data.collect())
-
-
-citydate = flatdata.filter( lambda  x : "City" in x)
-print()
-print("========citydate===========")
-print(citydate.collect())         #  print(data.collect())
-
-state = statedata.map( lambda x : x.replace('State->',''))
-print()
-print("========State===========")
-print(state.collect())         #  print(data.collect())
-
-city = citydate.map( lambda x  : x.replace("City->",""))
-print()
-print("========City===========")
-print(city.collect())         #  print(data.collect())
-
+print("okk")
