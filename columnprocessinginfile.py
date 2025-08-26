@@ -48,10 +48,16 @@ print(data.collect())
 
 fildata = data.filter( lambda  x : "Gymnastics" in x)
 print()
-print("===== rawdata======")
+print("===== fildata======")
 print(fildata.collect())
 
-indfil = data.filter( lambda x : "Gymnastics" in x[3])
+indfil = data.map( lambda x : x.split(","))
 print()
-print("===== rawdata======")
-print(fildata.collect())
+print("===== indfil======")
+print(indfil.collect())
+
+
+out = indfil.filter( lambda x : "Gymnastics" in x[3] )
+print()
+print("===== out======")
+out.foreach(print)
