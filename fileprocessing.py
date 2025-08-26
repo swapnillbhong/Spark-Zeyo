@@ -55,3 +55,8 @@ flatdata = lendata.flatMap( lambda x : x.split(","))
 print()
 print("===== flatdata======")
 flatdata.foreach(print)
+
+remdata = flatdata.map( lambda  x : x.replace("-",""))
+print()
+print("===== remdata======")
+remdata.foreach(print)
