@@ -60,3 +60,8 @@ remdata = flatdata.map( lambda  x : x.replace("-",""))
 print()
 print("===== remdata======")
 remdata.foreach(print)
+
+condata = remdata.map( lambda  x : x + "zeyo")
+print()
+print("===== condata======")
+condata.foreach(print)
