@@ -45,3 +45,13 @@ data = sc.textFile("dt.txt")
 print()
 print("===== rawdata======")
 print(data.collect())
+
+fildata = data.filter( lambda  x : "Gymnastics" in x)
+print()
+print("===== rawdata======")
+print(fildata.collect())
+
+indfil = data.filter( lambda x : "Gymnastics" in x[3])
+print()
+print("===== rawdata======")
+print(fildata.collect())
