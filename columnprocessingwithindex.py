@@ -67,3 +67,11 @@ prodfilter = schemardd.filter( lambda  x : "Gymnastics" in x.product)
 print()
 print("===== prodfilter ======")
 prodfilter.foreach(print)
+
+#convert RDD to Dataframe
+
+df = prodfilter.toDF()
+print()
+print("===== prodfilter Dataframe======")
+df.show()
+
