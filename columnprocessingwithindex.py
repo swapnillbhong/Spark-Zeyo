@@ -46,6 +46,10 @@ print()
 print("===== Raw Data ======")
 print(data.collect())
 
+mapdata = data.map( lambda  x : x.split(","))
+print()
+print("===== mapdata ======")
+print(mapdata.collect())
 
 
 
