@@ -52,6 +52,8 @@ print("===== mapdata ======")
 mapdata.foreach(print)
 
 
+#lets define column first
 
-
+from collections import namedtuple
+columns = namedtuple( ' columns' , ["id","tdate","amt","category","product","mode"])
 
