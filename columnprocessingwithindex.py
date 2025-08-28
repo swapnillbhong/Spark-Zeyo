@@ -41,8 +41,11 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
+data = sc.textFile("dt.txt")
+print()
+print("===== Raw Data ======")
+print(data.collect())
 
-print("OKKKKK")
 
 
 
