@@ -46,3 +46,9 @@ spark = SparkSession.builder.getOrCreate()
 
 csvdf = spark.read.format("csv").load("usdata.csv")
 csvdf.show()
+
+jsondf = spark.read.format("json").load("file4.json")
+jsondf.show()
+
+parquetdf = spark.read.format("parquet").load("file5.parquet")
+parquetdf.show()
