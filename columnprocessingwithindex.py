@@ -75,3 +75,11 @@ print()
 print("===== prodfilter Dataframe======")
 df.show()
 
+
+print()
+print()
+
+df.createOrReplaceTempView("putin")
+
+spark.sql(" select * from putin where id > 1").show()
+
