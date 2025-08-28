@@ -49,7 +49,7 @@ print(data.collect())
 mapdata = data.map( lambda  x : x.split(","))
 print()
 print("===== mapdata ======")
-print(mapdata.collect())
+mapdata.foreach(print)
 
 
 
