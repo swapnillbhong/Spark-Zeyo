@@ -55,5 +55,15 @@ mapdata.foreach(print)
 #lets define column first
 
 from collections import namedtuple
-columns = namedtuple( ' columns' , ["id","tdate","amt","category","product","mode"])
+columns = namedtuple( 'columns',['id','tdate','amt','category','product','mode'])
 
+#lets assign to split
+
+schemardd = mapdata.map( lambda x : columns( x[0],x[1],x[2],x[3],x[4],x[5] ))
+
+# apply filters on product column
+
+prodfilter = schemardd.filter( lambda  x : "Gymnastics" in x.product)
+print()
+print("===== prodfilter ======")
+prodfilter.foreach(print)
