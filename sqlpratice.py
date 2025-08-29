@@ -104,19 +104,27 @@ prod.createOrReplaceTempView("prod")
 
 ######### start sql practice ###########
 
+#select all the values from table
 spark.sql(" select * from df").show()
 
+#Select only two columns from the DF
 spark.sql(" select id,tdate from df ").show()
 
+#Select data from DF where Category = Exercise
 spark.sql(" select * from df where Category = 'Exercise'").show()
 
+#Select id, tdate,category, spendby from DF where category =’Exercise’ and spendby = ‘cash’
 spark.sql(" select * from df where Category = 'Exercise' and spendby = 'cash' ").show()
 
+#Multi valued Filter (in operator)
 spark.sql(" select id,tdate,Category,spendby from df where category in ('Exercise','Gymnastics')").show()
 
+#Filter product Contain ‘Gymnastics (like operator)
 spark.sql(" select * from df where product like '%Gymnastics%'").show()
 
+#Category not equal to Exercise (not operator)
 spark.sql(" select * from df where category != 'Exercise'").show()
 
-spark.sql(" select * from df where Category != 'Exercise' , 'Gymnastics'").show()
+#Not operator on multiple values
+spark.sql(" select * from df where Category not in ('Exercise' , 'Gymnastics')").show()
 
