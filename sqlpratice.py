@@ -106,6 +106,8 @@ prod.createOrReplaceTempView("prod")
 
 spark.sql(" select * from df").show()
 
+spark.sql(" select id,tdate from df ").show()
+
 
 
 
