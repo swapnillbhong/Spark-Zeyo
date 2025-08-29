@@ -108,6 +108,6 @@ spark.sql(" select * from df").show()
 
 spark.sql(" select id,tdate from df ").show()
 
-
+spark.sql(" select * from df where Category = 'Exercise'").show()
 
 
