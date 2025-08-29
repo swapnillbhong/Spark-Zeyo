@@ -128,3 +128,5 @@ spark.sql(" select * from df where category != 'Exercise'").show()
 #Not operator on multiple values
 spark.sql(" select * from df where Category not in ('Exercise' , 'Gymnastics')").show()
 
+#Is operator (select columns which has NULL values) is not NULL (select columns which has no Null values
+spark.sql(" select * from df where product is null").show()
