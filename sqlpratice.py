@@ -118,3 +118,5 @@ spark.sql(" select * from df where product like '%Gymnastics%'").show()
 
 spark.sql(" select * from df where category != 'Exercise'").show()
 
+spark.sql(" select * from df where Category != 'Exercise' and 'Gymnastics'").show()
+
