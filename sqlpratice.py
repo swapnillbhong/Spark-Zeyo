@@ -114,5 +114,7 @@ spark.sql(" select * from df where Category = 'Exercise' and spendby = 'cash' ")
 
 spark.sql(" select id,tdate,Category,spendby from df where category in ('Exercise','Gymnastics')").show()
 
-spark.sql(" select * from df where product like %Gymnastics%").show()
+spark.sql(" select * from df where product like '%Gymnastics%'").show()
+
+spark.sql(" select * from df where category != 'Exercise'").show()
 
