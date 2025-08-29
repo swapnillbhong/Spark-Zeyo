@@ -55,7 +55,7 @@ data = [
 ]
 
 df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
-df.show()
+#df.show()
 
 
 
@@ -67,7 +67,7 @@ data2 = [
 ]
 
 df1 = spark.createDataFrame(data2, ["id", "tdate", "amount", "category", "product", "spendby"])
-df1.show()
+#df1.show()
 
 
 
@@ -84,7 +84,7 @@ data4 = [
 
 
 cust = spark.createDataFrame(data4, ["id", "name"])
-cust.show()
+#cust.show()
 
 data3 = [
     (1, "mouse"),
@@ -93,7 +93,7 @@ data3 = [
 ]
 
 prod = spark.createDataFrame(data3, ["id", "product"])
-prod.show()
+#prod.show()
 
 
 # Register DataFrames as temporary views
@@ -103,4 +103,9 @@ cust.createOrReplaceTempView("cust")
 prod.createOrReplaceTempView("prod")
 
 ######### start sql practice ###########
+
+spark.sql(" select * from df").show()
+
+
+
 
