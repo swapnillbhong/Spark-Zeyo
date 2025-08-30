@@ -48,6 +48,10 @@ parquetdf.show()
 
 parquetdf.createOrReplaceTempView("pdf")
 
-spark.sql(" select tnxdate,custno from pdf").show()
+# sql way to process the data
+spark.sql(" select txndate,custno from pdf").show()
 
+#DSL way to process the data
+
+parquetdf.select("txndate","custno").show()
 
