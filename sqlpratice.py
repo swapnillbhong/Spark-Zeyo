@@ -132,3 +132,8 @@ spark.sql(" select * from df where Category not in ('Exercise' , 'Gymnastics')")
 spark.sql(" select * from df where product is null").show()
 
 spark.sql(" select * from df where product is not null").show()
+
+
+import time
+
+time.sleep(600)
