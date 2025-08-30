@@ -59,3 +59,6 @@ procdf.show()
 
 dropdf = df.drop("tdate","amount")
 dropdf.show()
+
+sindf = df.where(" category = 'Exercise'")
+sindf.show()
