@@ -69,6 +69,7 @@ sinndf.show()
 sinnndf = df.filter("  category = 'Exercise' and spendby = 'cash'")
 sinnndf.show()
 
-
+ordf = df.filter("  category = 'Exercise' or spendby = 'cash'")
+ordf.show()
 
 
