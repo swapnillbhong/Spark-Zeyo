@@ -46,4 +46,8 @@ parquetdf = spark.read.load("file5.parquet")
 parquetdf.show()
 
 
+parquetdf.createOrReplaceTempView("pdf")
+
+spark.sql(" select tnxdate,custno from pdf").show()
+
 
