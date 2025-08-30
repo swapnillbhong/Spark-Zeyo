@@ -62,3 +62,13 @@ dropdf.show()
 
 sindf = df.where(" category = 'Exercise'")
 sindf.show()
+
+sinndf = df.filter("  category = 'Exercise' ")
+sinndf.show()
+
+sinnndf = df.filter("  category = 'Exercise' and spendby = 'cash'")
+sinndf.show()
+
+
+
+
