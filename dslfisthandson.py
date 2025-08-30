@@ -67,7 +67,7 @@ sinndf = df.filter("  category = 'Exercise' ")
 sinndf.show()
 
 sinnndf = df.filter("  category = 'Exercise' and spendby = 'cash'")
-sinndf.show()
+sinnndf.show()
 
 
 
