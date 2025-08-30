@@ -56,3 +56,6 @@ df.show()
 
 procdf = df.select("tdate","amount")
 procdf.show()
+
+dropdf = df.drop("tdate","amount")
+dropdf.show()
