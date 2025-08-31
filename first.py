@@ -62,7 +62,79 @@ procdf = df.selectExpr(
     " upper(category) as category   ",  # Expression
     " concat(product,'~zeyo')  as  product ",  # Expression
     "spendby",   # select
-    "case when spendby='cash' then 0 else 1 end as status"
+    """ case  
+                   when spendby='cash'  then 0   
+                   when spendby='credit'  then 1  
+                   else 2   
+                   end   
+                   as status
+               """    #add one more column
+
 )
 
 procdf.show()
+
+
+#WITH COLUMN CODE
+
+
+data = [
+
+    ("00000", "06-26-2011", 200, "Exercise", "GymnasticsPro", "cash"),
+    ("00001", "05-26-2011", 300, "Exercise", "Weightlifting", "credit"),
+    ("00002", "06-01-2011", 100, "Exercise", "GymnasticsPro", "cash"),
+    ("00003", "06-05-2011", 100, "Gymnastics", "Rings", "credit"),
+    ("00004", "12-17-2011", 300, "Team Sports", "Field", "paytm"),
+    ("00005", "02-14-2011", 200, "Gymnastics", None , "cash")
+
+]
+df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
+df.show()
+
+
+
+withdf = (
+
+    df.withColumn("category",expr("upper(category)"))
+    .withColumn("amount",expr("amount+1000"))
+    .withColumn("product",expr("concat(product,'~zeyo')"))
+    .withColumn("id",expr("cast(id as int)"))
+    .withColumn("tdate",expr("split(tdate,'-')[2]"))
+    .withColumn("status",expr("case when spendby='cash' then 0 else 1 end as newstatus"))
+    .withColumnRenamed("tdate","year")
+
+)
+
+withdf.show()
+
+# JOINS
+
+data4 = [
+    (1, "raj"),
+    (2, "ravi"),
+    (3, "sai"),
+    (5, "rani")
+]
+
+cust = spark.createDataFrame(data4, ["id", "name"])
+cust.show()
+data3 = [
+    (1, "mouse"),
+    (3, "mobile"),
+    (7, "laptop")
+]
+prod = spark.createDataFrame(data3, ["id", "product"])
+prod.show()
+
+
+innerjoin = cust.join(  prod , ["id"], "inner")
+innerjoin.show()
+
+lefjoin  =   cust.join(prod, ["id"], "left")
+lefjoin.show()
+
+rightjoin = cust.join(prod, ["id"], "right")
+rightjoin.show()
+
+fulljoin = cust.join(prod, ["id"],"full")
+fulljoin.show()
