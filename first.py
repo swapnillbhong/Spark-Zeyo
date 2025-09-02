@@ -138,3 +138,6 @@ rightjoin.show()
 
 fulljoin = cust.join(prod, ["id"],"full")
 fulljoin.show()
+
+
+
