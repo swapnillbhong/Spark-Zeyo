@@ -40,4 +40,13 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
-print("okk")
+x = 99
+if x ==100 :
+    print("yes")
+else :
+    print("no")
+
+
+
+
+
