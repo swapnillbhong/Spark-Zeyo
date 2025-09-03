@@ -46,6 +46,15 @@ if x ==100 :
 else :
     print("no")
 
+name = input("enter the name")
+if name == "swapnil":
+    print("welcome",name)
+elif name == "pande":
+    print("welcome",name)
+else:
+    print("outsider")
+
+
 
 
 
