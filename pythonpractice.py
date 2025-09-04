@@ -55,11 +55,10 @@ else:
     print("outsider")
 
 
-a = [1,3,2,5,46,4,87,8,4,4]
-
-print(a[0:3])
-
-
+i = 1
+while i < 5 :
+    print(i)
+    i=i+1
 
 
 
