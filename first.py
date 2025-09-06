@@ -127,17 +127,19 @@ prod = spark.createDataFrame(data3, ["id", "product"])
 prod.show()
 
 
-innerjoin = cust.join(  prod , ["id"], "inner")
-innerjoin.show()
+prodids =  prod.rdd.map(lambda x : x["id"]).collect()
+print(prodids)
 
-lefjoin  =   cust.join(prod, ["id"], "left")
-lefjoin.show()
 
-rightjoin = cust.join(prod, ["id"], "right")
-rightjoin.show()
+filterdf = cust.filter(~cust.id.isin(prodids))
+filterdf.show()
 
-fulljoin = cust.join(prod, ["id"],"full")
-fulljoin.show()
+
+
+
+
+leftanti  = cust.join(prod, ["id"], "leftanti")
+leftanti.show()
 
 
 
