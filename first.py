@@ -138,6 +138,7 @@ filterdf.show()
 
 
 
+
 leftanti  = cust.join(prod, ["id"], "leftanti")
 leftanti.show()
 
@@ -192,3 +193,13 @@ finaldf =  exprdf.drop("name","name1")
 finaldf.show()
 
 
+
+
+
+
+
+
+
+
+crossjoin = cust.crossJoin(prod)
+crossjoin.show()
