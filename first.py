@@ -233,3 +233,107 @@ mulaggdf = df.groupBy("name","city").agg(
                 sum("amount").alias("total")
 )
 mulaggdf.show()
+
+#FULL REVISION CODE
+
+data = sc.textFile("file1.txt")
+
+mapsplit = data.map( lambda x : x.split(","))
+
+from collections import namedtuple
+
+schema = namedtuple( 'schema', ['txnno','txndate','custno','amount','category','product','city','state','spendby'])
+
+schemardd = mapsplit.map( lambda x : schema( x [0],x [1] ,x [2],x [3] ,x[4], x[5], x[6], x [7] ,x [8]  ))
+
+prodfilter = schemardd.filter(lambda x : 'Gymnastics' in x.product)
+
+prodfilter.foreach(print)
+
+schemadf = prodfilter.toDF()
+schemadf.show(5)
+print(schemadf.count())
+
+csvdf =  spark.read.format("csv").option("header","true").load("file3.txt")
+csvdf.show(5)
+print(csvdf.count())
+
+jsondf = spark.read.format("json").load("file4.json").select("txnno","txndate","custno","amount","category","product","city","state","spendby")
+jsondf.show(5)
+print(jsondf.count())
+
+parquetdf = spark.read.load("file5.parquet")
+parquetdf.show(5)
+print(parquetdf.count())
+
+uniondf = schemadf.union(csvdf).union(jsondf).union(parquetdf)
+uniondf.show(5)
+
+print(uniondf.count())
+
+
+
+procdf = (
+
+    uniondf.withColumn( "txndate" , expr("split(txndate,'-')[2]"))
+    .withColumnRenamed("txndate","year")
+    .withColumn("status" , expr("case when spendby='cash' then 1 else 0 end"))
+    .filter( "txnno > 50000")
+
+)
+procdf.show(10)
+
+
+
+aggdf = procdf.groupby("category").agg(
+
+    sum("amount").alias("total"),
+    count("custno").alias("cust_count")
+
+
+
+
+).withColumn("total" , expr("cast(total as decimal(18,2))"))
+
+
+aggdf.show()
+
+
+data4 = [
+    (1, "raj"),
+    (2, "ravi"),
+    (3, "sai"),
+    (5, "rani")
+]
+
+cust = spark.createDataFrame(data4, ["id", "name"])
+cust.show()
+data3 = [
+    (1, "mouse"),
+    (3, "mobile"),
+    (7, "laptop")
+]
+prod = spark.createDataFrame(data3, ["id", "product"])
+prod.show()
+
+
+
+inner = cust.join(prod, ["id"] , "inner")
+inner.show()
+
+left = cust.join(prod, ["id"] , "left")
+left.show()
+
+right = cust.join(prod, ["id"] , "right")
+right.show()
+
+
+full = cust.join(prod, ["id"] , "full")
+full.show()
+
+lefanti = cust.join(prod, ["id"] , "leftanti")
+lefanti.show()
+
+
+cross = cust.crossJoin(prod)
+cross.show()
