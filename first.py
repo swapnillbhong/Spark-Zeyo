@@ -203,3 +203,33 @@ finaldf.show()
 
 crossjoin = cust.crossJoin(prod)
 crossjoin.show()
+
+data = [
+    ("sai", "chennai", 10),
+    ("zeyo", "hyderabad", 15),
+    ("sai", "chennai", 15),
+    ("zeyo", "hyderabad", 10),
+    ("zeyo", "chennai", 5),
+    ("sai", "hyderabad", 10),
+    ("zeyo", "chennai", 20),
+    ("sai", "hyderabad", 10)
+]
+
+columns = ["name", "city", "amount"]
+df = spark.createDataFrame(data, schema=columns)
+df.show()
+aggdf =  df.groupBy("name").agg(
+
+    sum("amount").alias("total"),
+    count("amount").alias("cnt"),
+    collect_list("amount").alias("amount_collect"),
+    collect_set("amount").alias("amount_distinct")
+
+)
+aggdf.show()
+
+
+mulaggdf = df.groupBy("name","city").agg(
+                sum("amount").alias("total")
+)
+mulaggdf.show()
