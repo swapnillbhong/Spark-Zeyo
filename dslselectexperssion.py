@@ -55,13 +55,13 @@ df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product"
 df.show()
 
 profdf= df.selectExpr(
-          " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "
+                        "id",
+                        "tdate",
+                        "amount + 1000 as amount",
+                        "upper(category) as category",
+                        "concat(product,'~zeyo') as product",
+                        "spendby"
 
 )
-
+profdf.show()
 
