@@ -60,7 +60,8 @@ profdf= df.selectExpr(
                         "amount + 1000 as amount",
                         "upper(category) as category",
                         "concat(product,'~zeyo') as product",
-                        "spendby"
+                        "spendby",
+                        " case when spendby = 'cash' then 1 else 0 end as status"
 
 )
 profdf.show()
