@@ -56,7 +56,7 @@ df.show()
 
 profdf= df.selectExpr(
                         "cast(id as int) as id",
-                        "split('tdate','-')[2] as year",
+                        "split(tdate,'-')[2] as year",
                         "amount + 1000 as amount",
                         "upper(category) as category",
                         "concat(product,'~zeyo') as product",
