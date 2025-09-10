@@ -40,49 +40,23 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
-
 data = [
-    ('A', 'D', 'D'),
-    ('B', 'A', 'A'),
-    ('A', 'D', 'A')
+
+    ("00000", "06-26-2011", 200, "Exercise", "GymnasticsPro", "cash"),
+    ("00001", "05-26-2011", 300, "Exercise", "Weightlifting", "credit"),
+    ("00002", "06-01-2011", 100, "Exercise", "GymnasticsPro", "cash"),
+    ("00003", "06-05-2011", 100, "Gymnastics", "Rings", "credit"),
+    ("00004", "12-17-2011", 300, "Team Sports", "Field", "paytm"),
+    ("00005", "02-14-2011", 200, "Gymnastics", None , "cash")
+
 ]
-
-df = spark.createDataFrame(data).toDF("TeamA", "TeamB", "Won")
-
+df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
 df.show()
 
-print ("Get all teams from TeamA and TeamB")
-print()
-team = (
-    df.select(col("TeamA").alias("TeamName"))
-    .union(df.select(col("TeamB").alias("TeamName"))).distinct()
-)
-team.show()
-
-print("Count wins per team")
-print()
-win = (
-    df.groupBy("Won")
-    .count().withColumnRenamed("Won", "TeamName").withColumnRenamed("count", "Won")
-)
-win.show()
+withdf = df.withColumn("category",expr("upper(category)"))
+withdf.show()
 
 
-print()
-print("using left join all teams with win count")
-joindf = (
-    team.join(win, on="TeamName", how="left").orderBy("TeamName")
-)
-
-result_df  = joindf.selectExpr(
-    "TeamName",
-    "CASE WHEN Won IS NULL THEN 0 ELSE Won End as Won"
-)
-result_df.show()
-
-finalresult = result_df.distinct()
-finalresult1 = finalresult.orderBy("TeamName")
-finalresult1.show()
 
 
 

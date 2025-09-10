@@ -41,48 +41,28 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-data = [
-    ('A', 'D', 'D'),
-    ('B', 'A', 'A'),
-    ('A', 'D', 'A')
-]
+from pyspark.sql.functions import *
 
-df = spark.createDataFrame(data).toDF("TeamA", "TeamB", "Won")
+data = [(1, "Mark Ray", "AB"),
+        (2, "Peter Smith", "CD"),
+        (1, "Mark Ray", "EF"),
+        (2, "Peter Smith", "GH"),
+        (2, "Peter Smith", "CD"),
+        (3, "Kate", "IJ")]
 
+myschema = ["custid", "custname", "address"]
+
+df = spark.createDataFrame(data, schema=myschema)
 df.show()
 
-print ("Get all teams from TeamA and TeamB")
-print()
-team = (
-    df.select(col("TeamA").alias("TeamName"))
-    .union(df.select(col("TeamB").alias("TeamName"))).distinct()
-)
-team.show()
 
-print("Count wins per team")
-print()
-win = (
-    df.groupBy("Won")
-    .count().withColumnRenamed("Won", "TeamName").withColumnRenamed("count", "Won")
-)
-win.show()
+dropdf = df.dropDuplicates()
+dropdf.show()
 
-
-print()
-print("using left join all teams with win count")
-joindf = (
-    team.join(win, on="TeamName", how="left").orderBy("TeamName")
-)
-
-result_df  = joindf.selectExpr(
-    "TeamName",
-    "CASE WHEN Won IS NULL THEN 0 ELSE Won End as Won"
-)
-result_df.show()
-
-finalresult = result_df.distinct()
-finalresult1 = finalresult.orderBy("TeamName")
-finalresult1.show()
+muldf = (dropdf.groupBy("custid","custname")
+         .agg(collect_set("address").alias("address"))
+         .orderBy("custid"))
+muldf.show()
 
 
 
