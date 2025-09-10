@@ -69,3 +69,13 @@ rightjoin.show()
 
 filljoin = cust.join(prod , ["id"], "full")
 filljoin.show()
+
+
+csvdf = spark.read.format("csv").option("header","true").load("usdata.csv")
+#svdf.show()
+
+print(csvdf.rdd.getNumPartitions())
+
+
+repartdf = csvdf.repartition(12)
+print(repartdf.rdd.getNumPartitions())
