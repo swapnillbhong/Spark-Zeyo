@@ -64,3 +64,8 @@ innerjoin.show()
 leftjoin = cust.join(prod ,["id"],"left")
 leftjoin.show()
 
+rightjoin = cust.join(prod , ["id"],"right")
+rightjoin.show()
+
+filljoin = cust.join(prod , ["id"], "full")
+filljoin.show()
