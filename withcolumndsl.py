@@ -53,7 +53,12 @@ data = [
 df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
 df.show()
 
-withdf = df.withColumn("category",expr("upper(category)"))
+withdf = (((((df
+          .withColumn("category",expr("upper(category)")))
+          .withColumn("amount",expr("amount + 1000")))
+          .withColumn("product",expr("concat(product,'~zeyo')")))
+          .withColumn("tdate",expr("split(tdate,'-')[2]")))
+          .withColumnRenamed("tdate","year"))
 withdf.show()
 
 
