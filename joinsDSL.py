@@ -61,5 +61,6 @@ prod.show()
 innerjoin = cust.join( prod ,["id"],"inner")
 innerjoin.show()
 
-
+leftjoin = cust.join(prod ,["id"],"left")
+leftjoin.show()
 
