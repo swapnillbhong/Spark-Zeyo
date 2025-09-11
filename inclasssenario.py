@@ -69,3 +69,12 @@ comdf.show()
 
 filcoln= comdf.filter("comment == 'mismatch'")
 filcoln.show()
+
+finalexpr = filcoln.withColumn("comment",
+                               expr("""
+                               case when name1 is null then 'new in source'
+                               when name is null then 'new in target'
+                               else comment
+                               end
+"""))
+finalexpr.show()
