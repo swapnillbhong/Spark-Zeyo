@@ -64,4 +64,5 @@ df2.show()
 fulljoin = df1.join(df2 , ["id"],"full")
 fulljoin.show()
 
-
+condf = fulljoin.withColumn("comment",expr("case when name=name1 then 'match' else 'mismatch' end "))
+condf.show()
