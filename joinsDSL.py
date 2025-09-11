@@ -71,6 +71,9 @@ filljoin = cust.join(prod , ["id"], "full")
 filljoin.show()
 
 
+antijoin = cust.join(prod ,["id"],"leftanti")
+antijoin.show()
+
 
 
 
