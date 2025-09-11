@@ -78,3 +78,6 @@ finalexpr = filcoln.withColumn("comment",
                                end
 """))
 finalexpr.show()
+
+dropfinal = finalexpr.drop("name","name1")
+dropfinal.show()
