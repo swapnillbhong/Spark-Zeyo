@@ -41,35 +41,33 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-data4 = [
-    (1, "raj"),
-    (2, "ravi"),
-    (3, "sai"),
-    (5, "rani")
+data1 = [
+    (1, "abc", 31, "abc@gmail.com"),
+    (2, "def", 23, "defyahoo.com"),
+    (3, "xyz", 26, "xyz@gmail.com"),
+    (4, "qwe", 34, "qwegmail.com"),
+    (5, "iop", 24, "iop@gmail.com")
 ]
+myschema1 = ["id", "name", "age", "email"]
+df1 = spark.createDataFrame(data1, schema=myschema1)
+df1.show()
 
-cust = spark.createDataFrame(data4, ["id", "name"])
-cust.show()
-data3 = [
-    (1, "mouse"),
-    (3, "mobile"),
-    (7, "laptop")
+data2 = [
+    (11, "jkl", 22, "abc@gmail.com", 1000),
+    (12, "vbn", 33, "vbn@yahoo.com", 3000),
+    (13, "wer", 27, "wer", 2000),
+    (14, "zxc", 30, "zxc.com", 2000),
+    (15, "lkj", 29, "lkj@outlook.com", 2000)
 ]
-prod = spark.createDataFrame(data3, ["id", "product"])
-prod.show()
+myschema2 = ["id", "name", "age", "email", "salary"]
+df2 = spark.createDataFrame(data2, schema=myschema2)
+df2.show()
 
-innerjoin = cust.join( prod ,["id"],"inner")
-innerjoin.show()
+addsalary = df1.withColumn("salary",lit(1000))
+addsalary.show()
 
-leftjoin = cust.join(prod ,["id"],"left")
-leftjoin.show()
-
-rightjoin = cust.join(prod , ["id"],"right")
-rightjoin.show()
-
-filljoin = cust.join(prod , ["id"], "full")
-filljoin.show()
-
+uniondf = addsalary.union(df2).filter("email like '%@%' ")
+uniondf.show()
 
 
 

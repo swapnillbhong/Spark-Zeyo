@@ -40,40 +40,11 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
+csvdf = spark.read.format("csv").option("header","true").load("usdata.csv")
+#svdf.show()
 
-data4 = [
-    (1, "raj"),
-    (2, "ravi"),
-    (3, "sai"),
-    (5, "rani")
-]
-
-cust = spark.createDataFrame(data4, ["id", "name"])
-cust.show()
-data3 = [
-    (1, "mouse"),
-    (3, "mobile"),
-    (7, "laptop")
-]
-prod = spark.createDataFrame(data3, ["id", "product"])
-prod.show()
-
-innerjoin = cust.join( prod ,["id"],"inner")
-innerjoin.show()
-
-leftjoin = cust.join(prod ,["id"],"left")
-leftjoin.show()
-
-rightjoin = cust.join(prod , ["id"],"right")
-rightjoin.show()
-
-filljoin = cust.join(prod , ["id"], "full")
-filljoin.show()
+print(csvdf.rdd.getNumPartitions())
 
 
-
-
-
-
-
-
+repartdf = csvdf.repartition(12)
+print(repartdf.rdd.getNumPartitions())
