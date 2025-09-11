@@ -61,5 +61,7 @@ df2 = target_rdd.toDF(["id", "name1"])
 df1.show()
 df2.show()
 
+fulljoin = df1.join(df2 , ["id"],"full")
+fulljoin.show()
 
 
