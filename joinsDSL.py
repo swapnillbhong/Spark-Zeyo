@@ -74,6 +74,9 @@ filljoin.show()
 antijoin = cust.join(prod ,["id"],"leftanti")
 antijoin.show()
 
+crosscolumn = cust.crossJoin(prod)
+crosscolumn.show()
+
 
 
 
