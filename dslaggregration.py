@@ -2,6 +2,8 @@ import os
 import urllib.request
 import ssl
 
+from first import mulaggdf
+
 data_dir = "data"
 os.makedirs(data_dir, exist_ok=True)
 
@@ -64,4 +66,9 @@ aggdf = df.groupBy("name").agg(
                                 collect_list("amount").alias("collect_list")
 )
 aggdf.show()
+
+mulag = df.groupBy("name","city").agg(
+                                    sum("amount").alias("total")
+)
+mulag.show()
 
