@@ -59,7 +59,8 @@ df.show()
 
 aggdf = df.groupBy("name").agg(
                                 sum("amount").alias("TOtal"),
-                                count("amount").alias("cnt")
+                                count("amount").alias("cnt"),
+                                collect_set("amount").alias("Collect_set")
 )
 aggdf.show()
 
