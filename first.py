@@ -40,300 +40,41 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
-data = [
-
-    ("00000", "06-26-2011", 200, "Exercise", "GymnasticsPro", "cash"),
-    ("00001", "05-26-2011", 300, "Exercise", "Weightlifting", "credit"),
-    ("00002", "06-01-2011", 100, "Exercise", "GymnasticsPro", "cash"),
-    ("00003", "06-05-2011", 100, "Gymnastics", "Rings", "credit"),
-    ("00004", "12-17-2011", 300, "Team Sports", "Field", "paytm"),
-    ("00005", "02-14-2011", 200, "Gymnastics", None , "cash")
-
-]
-df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
-df.show()
-
-
-procdf = df.selectExpr(
-
-    " cast(id as int) as id",  # Expression
-    " split(tdate,'-')[2] as year ",     # Expression
-    "amount +  1000  as amount",    # Expression
-    " upper(category) as category   ",  # Expression
-    " concat(product,'~zeyo')  as  product ",  # Expression
-    "spendby",   # select
-    """ case  
-                   when spendby='cash'  then 0   
-                   when spendby='credit'  then 1  
-                   else 2   
-                   end   
-                   as status
-               """    #add one more column
-
-)
-
-procdf.show()
-
-
-#WITH COLUMN CODE
 
 
 data = [
 
-    ("00000", "06-26-2011", 200, "Exercise", "GymnasticsPro", "cash"),
-    ("00001", "05-26-2011", 300, "Exercise", "Weightlifting", "credit"),
-    ("00002", "06-01-2011", 100, "Exercise", "GymnasticsPro", "cash"),
-    ("00003", "06-05-2011", 100, "Gymnastics", "Rings", "credit"),
-    ("00004", "12-17-2011", 300, "Team Sports", "Field", "paytm"),
-    ("00005", "02-14-2011", 200, "Gymnastics", None , "cash")
-
+    ("DEPT1", 1000),
+    ("DEPT1", 500),
+    ("DEPT1", 700),
+    ("DEPT2", 400),
+    ("DEPT2", 200),
+    ("DEPT3", 200),
+    ("DEPT3", 500)
 ]
-df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
+
+columns = ["department", "salary"]
+
+df = spark.createDataFrame(data, columns)
+
 df.show()
 
 
-
-withdf = (
-
-    df.withColumn("category",expr("upper(category)"))
-    .withColumn("amount",expr("amount+1000"))
-    .withColumn("product",expr("concat(product,'~zeyo')"))
-    .withColumn("id",expr("cast(id as int)"))
-    .withColumn("tdate",expr("split(tdate,'-')[2]"))
-    .withColumn("status",expr("case when spendby='cash' then 0 else 1 end as newstatus"))
-    .withColumnRenamed("tdate","year")
-
-)
-
-withdf.show()
-
-# JOINS
-
-data4 = [
-    (1, "raj"),
-    (2, "ravi"),
-    (3, "sai"),
-    (5, "rani")
-]
-
-cust = spark.createDataFrame(data4, ["id", "name"])
-cust.show()
-data3 = [
-    (1, "mouse"),
-    (3, "mobile"),
-    (7, "laptop")
-]
-prod = spark.createDataFrame(data3, ["id", "product"])
-prod.show()
+from pyspark.sql.window import Window
+from pyspark.sql.functions import *
 
 
-prodids =  prod.rdd.map(lambda x : x["id"]).collect()
-print(prodids)
+createwindow = Window.partitionBy("department").orderBy(col("salary").desc())
+
+denserankdf = df.withColumn("denserank",dense_rank().over(createwindow))
+denserankdf.show()
 
 
-filterdf = cust.filter(~cust.id.isin(prodids))
-filterdf.show()
+findf = denserankdf.filter("denserank = 2")
+findf.show()
 
-
-
-
-
-
-leftanti  = cust.join(prod, ["id"], "leftanti")
-leftanti.show()
-
-
-source_rdd = spark.sparkContext.parallelize([
-    (1, "A"),
-    (2, "B"),
-    (3, "C"),
-    (4, "D")
-],1)
-
-target_rdd = spark.sparkContext.parallelize([
-    (1, "A"),
-    (2, "B"),
-    (4, "X"),
-    (5, "F")
-],2)
-
-# Convert RDDs to DataFrames using toDF()
-df1 = source_rdd.toDF(["id", "name"])
-df2 = target_rdd.toDF(["id", "name1"])
-
-df1.show()
-df2.show()
-
-
-joindf = df1.join(df2, ["id"], "full" )
-joindf.show()
-
-
-
-comdf = joindf.withColumn("comment" , expr("case when name=name1 then 'match'  else 'mismatch' end"))
-comdf.show()
-
-
-fildf = comdf.filter(" comment !=  'match'   ")
-fildf.show()
-
-
-exprdf = fildf.withColumn("comment", expr("""
-                                                    case
-                                                    when  name1  is null then 'New in Source'
-                                                    when  name   is null then 'New in Target'
-                                                    else comment
-                                                    end
-
-                                                """))
-exprdf.show()
-
-
-finaldf =  exprdf.drop("name","name1")
+finaldf = findf.drop("denserank")
 finaldf.show()
 
 
 
-
-
-
-
-
-
-
-crossjoin = cust.crossJoin(prod)
-crossjoin.show()
-
-data = [
-    ("sai", "chennai", 10),
-    ("zeyo", "hyderabad", 15),
-    ("sai", "chennai", 15),
-    ("zeyo", "hyderabad", 10),
-    ("zeyo", "chennai", 5),
-    ("sai", "hyderabad", 10),
-    ("zeyo", "chennai", 20),
-    ("sai", "hyderabad", 10)
-]
-
-columns = ["name", "city", "amount"]
-df = spark.createDataFrame(data, schema=columns)
-df.show()
-aggdf =  df.groupBy("name").agg(
-
-    sum("amount").alias("total"),
-    count("amount").alias("cnt"),
-    collect_list("amount").alias("amount_collect"),
-    collect_set("amount").alias("amount_distinct")
-
-)
-aggdf.show()
-
-
-mulaggdf = df.groupBy("name","city").agg(
-                sum("amount").alias("total")
-)
-mulaggdf.show()
-
-#FULL REVISION CODE
-
-data = sc.textFile("file1.txt")
-
-mapsplit = data.map( lambda x : x.split(","))
-
-from collections import namedtuple
-
-schema = namedtuple( 'schema', ['txnno','txndate','custno','amount','category','product','city','state','spendby'])
-
-schemardd = mapsplit.map( lambda x : schema( x [0],x [1] ,x [2],x [3] ,x[4], x[5], x[6], x [7] ,x [8]  ))
-
-prodfilter = schemardd.filter(lambda x : 'Gymnastics' in x.product)
-
-prodfilter.foreach(print)
-
-schemadf = prodfilter.toDF()
-schemadf.show(5)
-print(schemadf.count())
-
-csvdf =  spark.read.format("csv").option("header","true").load("file3.txt")
-csvdf.show(5)
-print(csvdf.count())
-
-jsondf = spark.read.format("json").load("file4.json").select("txnno","txndate","custno","amount","category","product","city","state","spendby")
-jsondf.show(5)
-print(jsondf.count())
-
-parquetdf = spark.read.load("file5.parquet")
-parquetdf.show(5)
-print(parquetdf.count())
-
-uniondf = schemadf.union(csvdf).union(jsondf).union(parquetdf)
-uniondf.show(5)
-
-print(uniondf.count())
-
-
-
-procdf = (
-
-    uniondf.withColumn( "txndate" , expr("split(txndate,'-')[2]"))
-    .withColumnRenamed("txndate","year")
-    .withColumn("status" , expr("case when spendby='cash' then 1 else 0 end"))
-    .filter( "txnno > 50000")
-
-)
-procdf.show(10)
-
-
-
-aggdf = procdf.groupby("category").agg(
-
-    sum("amount").alias("total"),
-    count("custno").alias("cust_count")
-
-
-
-
-).withColumn("total" , expr("cast(total as decimal(18,2))"))
-
-
-aggdf.show()
-
-
-data4 = [
-    (1, "raj"),
-    (2, "ravi"),
-    (3, "sai"),
-    (5, "rani")
-]
-
-cust = spark.createDataFrame(data4, ["id", "name"])
-cust.show()
-data3 = [
-    (1, "mouse"),
-    (3, "mobile"),
-    (7, "laptop")
-]
-prod = spark.createDataFrame(data3, ["id", "product"])
-prod.show()
-
-
-
-inner = cust.join(prod, ["id"] , "inner")
-inner.show()
-
-left = cust.join(prod, ["id"] , "left")
-left.show()
-
-right = cust.join(prod, ["id"] , "right")
-right.show()
-
-
-full = cust.join(prod, ["id"] , "full")
-full.show()
-
-lefanti = cust.join(prod, ["id"] , "leftanti")
-lefanti.show()
-
-
-cross = cust.crossJoin(prod)
-cross.show()
