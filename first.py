@@ -69,12 +69,20 @@ createwindow = Window.partitionBy("department").orderBy(col("salary").desc())
 denserankdf = df.withColumn("denserank",dense_rank().over(createwindow))
 denserankdf.show()
 
+rankdf = df.withColumn("rank",rank().over(createwindow))
+rankdf.show()
+
+print("======rank seen")
+rankdf2 = rankdf.filter("rank = 2")
+rankdf2.show()
 
 findf = denserankdf.filter("denserank = 2")
 findf.show()
 
+print("========= dense ranking =======")
 finaldf = findf.drop("denserank")
 finaldf.show()
 
-
-
+print("======= ranking======")
+rankdf2 = rankdf2.drop("rank")
+rankdf2.show()
