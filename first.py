@@ -86,3 +86,43 @@ finaldf.show()
 print("======= ranking======")
 rankdf2 = rankdf2.drop("rank")
 rankdf2.show()
+
+
+
+#df.write.format("parquet").mode("overwrite").save("windowdata")
+
+
+data = """
+{
+    "id": 1,
+    "institute": "zeyo",
+    "trainer": "Sai",
+    "zeyoAddress" :{
+              "permanentAddress" : "Hyderabad",
+              "temporaryAddress" : "chennai"    
+    }
+}
+"""
+
+jsonrdd = sc.parallelize([data])
+
+
+df = spark.read.option("multiline","true").json(jsonrdd)
+
+
+df.show()
+df.printSchema()
+
+
+flatdf = df.select(
+
+    "id",
+    "institute",
+    "trainer",
+    "zeyoAddress.permanentAddress",
+    "zeyoAddress.temporaryAddress"
+
+)
+
+flatdf.show()
+flatdf.printSchema()
