@@ -59,6 +59,8 @@ df = spark.createDataFrame(data, columns)
 
 df.show()
 
+df.write.format("parquet").mode("overwrite").save("windowdat")
+print("Done with write")
 
 
 
