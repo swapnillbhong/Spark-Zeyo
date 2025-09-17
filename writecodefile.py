@@ -41,7 +41,23 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-print("okk ")
+
+data = [
+
+    ("DEPT1", 1000),
+    ("DEPT1", 500),
+    ("DEPT1", 700),
+    ("DEPT2", 400),
+    ("DEPT2", 200),
+    ("DEPT3", 200),
+    ("DEPT3", 500)
+]
+
+columns = ["department", "salary"]
+
+df = spark.createDataFrame(data, columns)
+
+df.show()
 
 
 
