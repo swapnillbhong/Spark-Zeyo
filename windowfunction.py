@@ -2,8 +2,6 @@ import os
 import urllib.request
 import ssl
 
-
-
 data_dir = "data"
 os.makedirs(data_dir, exist_ok=True)
 
@@ -43,32 +41,11 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-data = [
-    ("sai", "chennai", 10),
-    ("zeyo", "hyderabad", 15),
-    ("sai", "chennai", 15),
-    ("zeyo", "hyderabad", 10),
-    ("zeyo", "chennai", 5),
-    ("sai", "hyderabad", 10),
-    ("zeyo", "chennai", 20),
-    ("sai", "hyderabad", 10)
-]
-
-columns = ["name", "city", "amount"]
-df = spark.createDataFrame(data, schema=columns)
-df.show()
 
 
-aggdf = df.groupBy("name").agg(
-                                sum("amount").alias("TOtal"),
-                                count("amount").alias("cnt"),
-                                collect_set("amount").alias("Collect_set"),
-                                collect_list("amount").alias("collect_list")
-)
-aggdf.show()
+print("Run proper")
 
-mulag = df.groupBy("name","city").agg(
-                                    sum("amount").alias("total")
-)
-mulag.show()
+
+
+
 
