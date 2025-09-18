@@ -58,7 +58,11 @@ df = spark.createDataFrame(data, columns)
 
 df.show()
 
+from pyspark.sql.window import Window
+from pyspark.sql.functions import *
 
+createwindow = Window.partitionBy("department").orderBy(col("salary").desc())
 
-
+denserankdf = df.withColumn("denserank",dense_rank().over(createwindow))
+denserankdf.show()
 
