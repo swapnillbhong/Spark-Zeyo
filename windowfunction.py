@@ -66,3 +66,10 @@ createwindow = Window.partitionBy("department").orderBy(col("salary").desc())
 denserankdf = df.withColumn("denserank",dense_rank().over(createwindow))
 denserankdf.show()
 
+fildf = denserankdf.filter("denserank = 2")
+fildf.show()
+
+finaldf = fildf.drop("denserank")
+finaldf.show()
+
+
