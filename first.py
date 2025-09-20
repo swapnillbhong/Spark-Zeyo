@@ -41,57 +41,6 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-
-data = [
-
-    ("DEPT1", 1000),
-    ("DEPT1", 500),
-    ("DEPT1", 700),
-    ("DEPT2", 400),
-    ("DEPT2", 200),
-    ("DEPT3", 200),
-    ("DEPT3", 500)
-]
-
-columns = ["department", "salary"]
-
-df = spark.createDataFrame(data, columns)
-
-df.show()
-
-
-from pyspark.sql.window import Window
-from pyspark.sql.functions import *
-
-
-createwindow = Window.partitionBy("department").orderBy(col("salary").desc())
-
-denserankdf = df.withColumn("denserank",dense_rank().over(createwindow))
-denserankdf.show()
-
-rankdf = df.withColumn("rank",rank().over(createwindow))
-rankdf.show()
-
-print("======rank seen===========")
-rankdf2 = rankdf.filter("rank = 2")
-rankdf2.show()
-
-findf = denserankdf.filter("denserank = 2")
-findf.show()
-
-print("========= dense ranking =======")
-finaldf = findf.drop("denserank")
-finaldf.show()
-
-print("======= ranking======")
-rankdf2 = rankdf2.drop("rank")
-rankdf2.show()
-
-
-
-#df.write.format("parquet").mode("overwrite").save("windowdata")
-
-
 data = """
 {
     "id": 1,
@@ -187,6 +136,50 @@ flatdf = df.selectExpr(
 
 flatdf.show()
 flatdf.printSchema()
+
+# WITH COLUMN 2 FULL CODE
+
+data="""{
+    "id": 1,
+    "institute": "zeyo",
+    "trainer": "Sai",
+    "zeyoAddress" :{
+            "user":{
+    			"permanentAddress" : "Hyderabad",
+    			"temporaryAddress" : "chennai"  
+    			},
+    	    "doorno" : 4		 
+    }
+}"""
+
+df = spark.read.json(sc.parallelize([data]))
+df.show()
+df.printSchema()
+
+flatdf = df.select(
+
+    "id",
+    "institute",
+    "trainer",
+    "zeyoAddress.user.permanentAddress",
+    "zeyoAddress.user.temporaryAddress",
+    "zeyoAddress.doorno"
+
+
+)
+
+flatdf.show()
+flatdf.printSchema()
+
+withflatdf =(
+
+    df.withColumn("permanentAddress",expr("zeyoAddress.user.permanentAddress"))
+    .withColumn("temporaryAddress", expr("zeyoAddress.user.temporaryAddress"))
+    .withColumn("doorno",expr("zeyoAddress.doorno"))
+    .drop("zeyoAddress")
+)
+withflatdf.show()
+withflatdf.printSchema()
 
 
 
