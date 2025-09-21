@@ -40,36 +40,26 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
-## COMPLEX ARRAY EXAMPLE 2
+## WITHCOLUMN
 
 data="""{
-   "name":"John",
-   "age":30,
-   "cars":[
-      {
-         "name":"Ford",
-         "models":[
-            "Fiesta",
-            "Focus",
-            "Mustang"
-         ]
-      },
-      {
-         "name":"BMW",
-         "models":[
-            "320",
-            "X3",
-            "X5"
-         ]
-      },
-      {
-         "name":"Fiat",
-         "models":[
-            "500",
-            "Panda"
-         ]
-      }
-   ]
+  "id": 1,
+  "name": "Sai",
+  "address": {
+    "street": "123 Main St",
+    "city": "Hyderabad",
+    "zip": "500081"
+  },
+  "contacts": [
+    {
+      "type": "email",
+      "value": "sai@example.com"
+    },
+    {
+      "type": "phone",
+      "value": "‪+91-9876543210‬"
+    }
+  ]
 }"""
 
 df = spark.read.json(sc.parallelize([data]))
@@ -77,39 +67,77 @@ df = spark.read.json(sc.parallelize([data]))
 df.show()
 df.printSchema()
 
-flat1 = df.selectExpr(
+arrayflat = df.withColumn("contacts",expr("explode(contacts)"))
 
-    "age",
-    "explode(cars) as cars",
+arrayflat.show()
+arrayflat.printSchema()
+
+finalflat = arrayflat.select(
+
+    "address.city",
+    "address.street",
+    "address.zip",
+    "contacts.type",
+    "contacts.value",
+    "id",
     "name"
-
 )
-
-flat1.show()
-flat1.printSchema()
-
-flat2 = flat1.selectExpr(
-
-    "age",
-    "cars.models",
-    "cars.name as cars_name",
-    "name"
-
-)
-
-flat2.show()
-flat2.printSchema()
-
-
-finalflat = flat2.selectExpr(
-
-    "age",
-    "explode(models) as models",
-    "cars_name",
-    "name"
-
-)
-
 finalflat.show()
 finalflat.printSchema()
 
+
+# URL DATA
+
+import urllib
+import ssl
+
+urldata = urllib.request.urlopen("https://randomuser.me/api/0.8/?results=10",context=ssl._create_unverified_context()).read().decode('utf-8')
+
+
+print(urldata)
+
+
+df   = spark.read.json(sc.parallelize([urldata]))
+
+df.show()
+df.printSchema()
+
+
+
+explodedf = df.withColumn("results" , expr("explode(results)"))
+
+explodedf.show()
+explodedf.printSchema()
+
+
+finalflatten = explodedf.select(
+
+    "nationality",
+    "results.user.cell",
+    "results.user.dob",
+    "results.user.email",
+    "results.user.gender",
+    "results.user.location.city",
+    "results.user.location.state",
+    "results.user.location.street",
+    "results.user.location.zip",
+    "results.user.md5",
+    "results.user.name.first",
+    "results.user.name.last",
+    "results.user.name.title",
+    "results.user.password",
+    "results.user.phone",
+    "results.user.picture.large",
+    "results.user.picture.medium",
+    "results.user.picture.thumbnail",
+    "results.user.registered",
+    "results.user.salt",
+    "results.user.sha1",
+    "results.user.sha256",
+    "results.user.username",
+    "seed",
+    "version"
+)
+
+finalflatten.show()
+finalflatten.printSchema()
