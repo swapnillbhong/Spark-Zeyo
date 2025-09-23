@@ -2,12 +2,14 @@ import os
 import urllib.request
 import ssl
 
+
 data_dir = "data"
 os.makedirs(data_dir, exist_ok=True)
 
 data_dir1 = "hadoop/bin"
 os.makedirs(data_dir1, exist_ok=True)
 
+# Set HADOOP_HOME environment variable
 hadoop_home = os.path.abspath("hadoop")   # <-- absolute path
 os.makedirs(os.path.join(hadoop_home, "bin"), exist_ok=True)
 
@@ -21,6 +23,7 @@ import sys
 import os
 import urllib.request
 import ssl
+
 
 python_path = sys.executable
 os.environ['PYSPARK_PYTHON'] = python_path
@@ -42,7 +45,7 @@ spark = SparkSession.builder.getOrCreate()
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
 
-
+# Sample JSON data as a multi-line string
 data = """
 {
   "first_name": "Rajeev",
@@ -67,15 +70,19 @@ data = """
 }
 """
 
+# Create an RDD from the JSON string
 jsonrdd = spark.sparkContext.parallelize([data])
 
 
+# Create a DataFrame from the RDD, treating it as a multi-line JSON
 df = spark.read.option("multiline","true").json(jsonrdd)
 
 
+# Show the original DataFrame and its schema
 df.show()
 df.printSchema()
 
+# Flatten the DataFrame by selecting and renaming nested fields
 flatdf = df.selectExpr(
     "age",
     "billing_address.address   as   billing_address",
@@ -94,5 +101,6 @@ flatdf = df.selectExpr(
     "shipping_address.state as shipping_state"
 )
 
+# Show the flattened DataFrame and its schema
 flatdf.show()
 flatdf.printSchema()
