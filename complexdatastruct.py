@@ -61,3 +61,15 @@ df = spark.read.option("multiline","true").json(jsonrdd)
 
 
 df.show()
+df.printSchema()
+
+flatdf = df.select(
+    "id",
+    "institute",
+    "trainer",
+    "zeyoAddress.permanentAddress",
+    "zeyoAddress.temporaryAddress"
+)
+
+flatdf.show()
+flatdf.printSchema()
