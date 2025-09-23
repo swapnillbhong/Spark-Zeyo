@@ -42,19 +42,32 @@ spark = SparkSession.builder.getOrCreate()
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
 
+
 data = """
 {
-    "id": 1,
-    "institute": "zeyo",
-    "trainer": "Sai",
-    "zeyoAddress" :{
-    			"permanentAddress" : "Hyderabad",
-    			"temporaryAddress" : "chennai"    
-    }
+  "first_name": "Rajeev",
+  "last_name": "Sharma",
+  "email_address": "rajeev@ezeelive.com",
+  "is_alive": true,
+  "age": 30,
+  "height_cm": 185.2,
+  "billing_address": {
+    "address": "502, Main Market, Evershine City, Evershine, Vasai East",
+    "city": "Vasai Raod, Palghar",
+    "state": "Maharashtra",
+    "postal_code": "401208"
+  },
+  "shipping_address": {
+    "address": "Ezeelive Technologies, A-4, Stattion Road, Oripada, Dahisar East",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "postal_code": "400058"
+  },
+ "date_of_birth": null
 }
 """
 
-jsonrdd = sc.parallelize([data])
+jsonrdd = spark.sparkContext.parallelize([data])
 
 
 df = spark.read.option("multiline","true").json(jsonrdd)
@@ -63,15 +76,23 @@ df = spark.read.option("multiline","true").json(jsonrdd)
 df.show()
 df.printSchema()
 
-flatdf = df.select(
-    "id",
-    "institute",
-    "trainer",
-    "zeyoAddress.permanentAddress",
-    "zeyoAddress.temporaryAddress"
+flatdf = df.selectExpr(
+    "age",
+    "billing_address.address   as   billing_address",
+    "billing_address.city   as   billing_city",
+    "billing_address.postal_code as billing_postal_code",
+    "billing_address.state as billing_state",
+    "date_of_birth",
+    "email_address",
+    "first_name",
+    "height_cm",
+    "is_alive",
+    "last_name",
+    "shipping_address.address as shipping_address",
+    "shipping_address.city as shipping_city",
+    "shipping_address.postal_code as shipping_postal",
+    "shipping_address.state as shipping_state"
 )
 
 flatdf.show()
 flatdf.printSchema()
-
-
