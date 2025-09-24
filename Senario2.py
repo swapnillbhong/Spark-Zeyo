@@ -55,12 +55,11 @@ myschema = ["orderid","statusdate","status"]
 df = spark.createDataFrame(data,schema=myschema)
 df.show()
 
-finaldf = df.withColumn("status",expr("status == dispatch"))
+finaldf = df.withColumn("is_dispatched", lower(col("status")) == "dispatched")
 finaldf.show()
 
+fildf = finaldf.filter(col("is_dispatched"))
+fildf.show()
 
-
-
-
-
-
+finaldf = fildf.drop("is_dispatched")
+finaldf.show()
