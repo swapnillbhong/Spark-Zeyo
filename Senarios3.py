@@ -41,25 +41,27 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-data = [
-    (1, "1-Jan", "Ordered"),
-    (1, "2-Jan", "dispatched"),
-    (1, "3-Jan", "dispatched"),
-    (1, "4-Jan", "Shipped"),
-    (1, "5-Jan", "Shipped"),
-    (1, "6-Jan", "Delivered"),
-    (2, "1-Jan", "Ordered"),
-    (2, "2-Jan", "dispatched"),
-    (2, "3-Jan", "shipped")]
-myschema = ["orderid","statusdate","status"]
-df = spark.createDataFrame(data,schema=myschema)
+from pyspark.sql.window import *
+from pyspark.sql.functions import *
+
+
+
+
+data = [(1111, "2021-01-15", 10),
+        (1111, "2021-01-16", 15),
+        (1111, "2021-01-17", 30),
+        (1112, "2021-01-15", 10),
+        (1112, "2021-01-15", 20),
+        (1112, "2021-01-15", 30)]
+
+myschema = ["sensorid", "timestamp", "values"]
+
+df = spark.createDataFrame(data, schema=myschema)
 df.show()
 
-finaldf = df.withColumn("is_dispatched", (col("status")) == "dispatched")
-finaldf.show()
 
-fildf = finaldf.filter(col("is_dispatched"))
-fildf.show()
+d1 = Window.partitionBy("sensorid").orderBy("timestamp")
 
-finaldf = fildf.drop("is_dispatched")
-finaldf.show()
+finaldf = df.withColumn("nextvalue")
+
+
