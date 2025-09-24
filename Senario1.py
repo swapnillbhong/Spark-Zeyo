@@ -53,5 +53,8 @@ df.show()
 #df.createOrReplaceTempView("worktab")
 #spark.sql("select a.workerid,a.firstname,a.lastname,a.salary,a.joiningdate,a.depart from worktab a, worktab b where a.salary=b.salary and a.workerid !=b.workerid").show()
 
-finaldf = df.alias("a").join(df.alias("b"),(col("a.salary")==col("b.salary")) & (col("a.workerid")!= col("b.workerid")),"inner").select(col("a.workerid"),col("a.firstname"),col("a.lastname"),col("a.salary"),col("a.joiningdate"),col("a.depart"))
+finaldf = (df.alias("a").join(df.alias("b"),(col("a.salary") == col("b.salary")) & (col("a.workerid") != col("b.workerid")),"inner")
+           .select(col("a.workerid"),col("a.firstname"),col("a.lastname"),col("a.salary"),col("a.joiningdate"),col("a.depart")))
 finaldf.show()
+
+
