@@ -64,4 +64,4 @@ d1 = Window.partitionBy("sensorid").orderBy("timestamp")
 
 finaldf = df.withColumn("nextvalue")
 
-
+print("okkkk")
