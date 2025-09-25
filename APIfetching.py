@@ -57,6 +57,40 @@ df.show()
 df.printSchema()
 
 
+expdf = df.withColumn("results",expr("explode(results)"))
+expdf.show()
+expdf.printSchema()
+
+finaldf = expdf.select(
+    "nationality",
+    "results.user.cell",
+    "results.user.dob",
+    "results.user.email",
+    "results.user.gender",
+    "results.user.location.city",
+    "results.user.location.state",
+    "results.user.location.street",
+    "results.user.location.zip",
+    "results.user.md5",
+    "results.user.name.first",
+    "results.user.name.last",
+    "results.user.name.title",
+    "results.user.password",
+    "results.user.phone",
+    "results.user.picture.large",
+    "results.user.picture.medium",
+    "results.user.picture.thumbnail",
+    "results.user.registered",
+    "results.user.salt",
+    "results.user.sha1",
+    "results.user.sha256",
+    "results.user.username",
+    "seed",
+    "version"
+)
+
+finaldf.show()
+finaldf.printSchema()
 
 
 
