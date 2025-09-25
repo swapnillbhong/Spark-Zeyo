@@ -66,6 +66,13 @@ df = spark.read.json(sc.parallelize([data]))
 df.show()
 df.printSchema()
 
-
-
+finaldf = ((df.withColumn("City",expr("address.city as city"))
+           .withColumn("street",expr("address.street as street"))
+           .withColumn("zip",expr("address.zip as zip"))
+           .withColumn("contacts",expr("explode(contacts)")))
+           .withColumn("Contact_type",expr("contacts.type as Contact_type"))
+           .withColumn("contact_value",expr("contacts.value as contact_value"))
+           .drop("address","contacts"))
+finaldf.show()
+finaldf.printSchema()
 
