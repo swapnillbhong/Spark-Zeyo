@@ -52,7 +52,8 @@ myschema = ["empid","name","salary"]
 df = spark.createDataFrame(data,schema=myschema)
 df.show()
 
-
+finaldf = df.withColumn("designation",expr(" case when salary > 10000 then 'manager' else 'employee' end as designation "))
+finaldf.show()
 
 
 
