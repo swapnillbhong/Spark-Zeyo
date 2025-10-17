@@ -115,3 +115,45 @@ def is_prime(n):
 # --- Examples ---
 print(f"Is 29 prime? {is_prime(29)}")
 print(f"Is 15 prime? {is_prime(15)}")
+
+
+#Init example
+#defination
+#The __init__ method is the special
+# set of instructions that runs automatically whenever
+# you create a new object from that blueprint.
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+# Create an object (this calls __init__ automatically)
+p1 = Person("Alice", 30)
+
+# Access the attributes that were initialized
+print(f"{p1.name} is {p1.age} years old.")
+
+#project of most recent
+
+#from pyspark.sql import SparkSession, Window
+
+data = [
+    (101, "2025-01-01", 8, "P001"),
+    (102, "2025-01-01", 6, "P002"),
+    (101, "2025-01-02", 7, "P005"),
+    (103, "2025-01-01", 5, "P003"),
+    (102, "2025-01-02", 8, "P002"),
+    (101, "2025-01-03", 9, "P004")
+]
+columns = ["employee_id", "date", "hours_worked", "project_id"]
+df = spark.createDataFrame(data, columns)
+
+windowSpec = Window.partitionBy("employee_id").orderBy(col("date").desc())
+
+recent_projects_df = df.withColumn("rank", row_number().over(windowSpec)) \
+    .filter(col("rank") == 1) \
+    .select("employee_id", "date", "project_id")
+
+print("Most recent project for each employee:")
+recent_projects_df.show()

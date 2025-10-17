@@ -15,7 +15,7 @@ os.makedirs(os.path.join(hadoop_home, "bin"), exist_ok=True)
 # ======================================================================================
 
 from pyspark import SparkConf, SparkContext
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, Window
 from pyspark.sql.functions import *
 from pyspark.sql.types import StructType, StructField, IntegerType
 import sys
@@ -38,32 +38,24 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
-transactions = [
-    {"id": 1, "user": "A", "amount": 120, "type": "credit"},
-    {"id": 2, "user": "B", "amount": 50, "type": "debit"},
-    {"id": 3, "user": "A", "amount": 200, "type": "credit"},
-    {"id": 4, "user": "C", "amount": 75, "type": "debit"},
-    {"id": 5, "user": "B", "amount": 300, "type": "credit"},
-    {"id": 6, "user": "A", "amount": 30, "type": "debit"}
+#from pyspark.sql import SparkSession, Window
+
+data = [
+    (101, "2025-01-01", 8, "P001"),
+    (102, "2025-01-01", 6, "P002"),
+    (101, "2025-01-02", 7, "P005"),
+    (103, "2025-01-01", 5, "P003"),
+    (102, "2025-01-02", 8, "P002"),
+    (101, "2025-01-03", 9, "P004")
 ]
+columns = ["employee_id", "date", "hours_worked", "project_id"]
+df = spark.createDataFrame(data, columns)
 
-# 1. Compute net balance per user
-balances = {}
-for transaction in transactions:
-    user = transaction["user"]
-    amount = transaction["amount"]
-    trans_type = transaction["type"]
+windowSpec = Window.partitionBy("employee_id").orderBy(col("date").desc())
 
-    if user not in balances:
-        balances[user] = 0
+recent_projects_df = df.withColumn("rank", row_number().over(windowSpec)) \
+    .filter(col("rank") == 1) \
+    .select("employee_id", "date", "project_id")
 
-    if trans_type == "credit":
-        balances[user] += amount
-    elif trans_type == "debit":
-        balances[user] -= amount
-
-# 2. Return the top 2 users by balance
-top_users = sorted(balances.items(), key=lambda item: item[1], reverse=True)[:2]
-
-print("User balances:", balances)
-print("Top 2 users by balance:", top_users)
+print("Most recent project for each employee:")
+recent_projects_df.show()
