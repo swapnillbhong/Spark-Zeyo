@@ -105,3 +105,13 @@ top_users = sorted(balances.items(), key=lambda item: item[1], reverse=True)[:2]
 print("User balances:", balances)
 print("Top 2 users by balance:", top_users)
 
+#prime no program
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    return all(n % i != 0 for i in range(2, int(n**0.5) + 1))
+
+# --- Examples ---
+print(f"Is 29 prime? {is_prime(29)}")
+print(f"Is 15 prime? {is_prime(15)}")
