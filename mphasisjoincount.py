@@ -60,3 +60,13 @@ print(f"Inner Join Count: {inner_join_count}")
 # --- Left Join ---
 left_join_count = table_a.join(table_b, "ID", "left").count()
 print(f"Left Join Count: {left_join_count}")
+
+# --- Right Join ---
+right_join_count = table_a.join(table_b, "ID", "right").count()
+print(f"right Join Count: {right_join_count}" )
+
+# --- Full Outer Join ---
+full_outer_join_count = table_a.join(table_b, "ID", "full").count()
+print(f"Full Outer Join Count: {full_outer_join_count}")
+
+
