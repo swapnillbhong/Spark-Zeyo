@@ -1,3 +1,4 @@
+
 import os
 import urllib.request
 import ssl
@@ -17,10 +18,8 @@ os.makedirs(os.path.join(hadoop_home, "bin"), exist_ok=True)
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
+from pyspark.sql.types import StructType, StructField, IntegerType
 import sys
-import os
-import urllib.request
-import ssl
 
 python_path = sys.executable
 os.environ['PYSPARK_PYTHON'] = python_path
@@ -41,23 +40,23 @@ spark = SparkSession.builder.getOrCreate()
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
+# Define the schema for the tables
+schema = StructType([
+    StructField("ID", IntegerType(), True)
+])
 
-# Read CSV
+# Create data for Table A and Table B
+data_a = [(0,), (1,), (1,), (None,)]
+data_b = [(0,), (0,), (1,), (1,), (0,), (None,)]
 
-csvdf = spark.read.format("csv").load("usdata.csv")
-csvdf.show()
+# Create DataFrames
+table_a = spark.createDataFrame(data_a, schema)
+table_b = spark.createDataFrame(data_b, schema)
 
-jsondf = spark.read.format("json").load("file4.json")
-jsondf.show()
+# --- Inner Join ---
+inner_join_count = table_a.join(table_b, "ID").count()
+print(f"Inner Join Count: {inner_join_count}")
 
-parquetdf = spark.read.format("parquet").load("file5.parquet")
-parquetdf.show()
-
-
-s3data = spark.read.format("").option(""
-                                      ""
-                                      ""
-                                      ""
-                                      ""
-                                      "").load("s3://zeyon45.hdbehbsd.jfrh")
-s3data.show()
+# --- Left Join ---
+left_join_count = table_a.join(table_b, "ID", "left").count()
+print(f"Left Join Count: {left_join_count}")
