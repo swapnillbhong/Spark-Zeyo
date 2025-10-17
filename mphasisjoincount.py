@@ -69,4 +69,39 @@ print(f"right Join Count: {right_join_count}" )
 full_outer_join_count = table_a.join(table_b, "ID", "full").count()
 print(f"Full Outer Join Count: {full_outer_join_count}")
 
+#2nd highest age in SQL
+#SELECT MAX(age) AS SecondHighestAge
+#FROM employees
+#WHERE age < (SELECT MAX(age) FROM employees);
+
+
+transactions = [
+    {"id": 1, "user": "A", "amount": 120, "type": "credit"},
+    {"id": 2, "user": "B", "amount": 50, "type": "debit"},
+    {"id": 3, "user": "A", "amount": 200, "type": "credit"},
+    {"id": 4, "user": "C", "amount": 75, "type": "debit"},
+    {"id": 5, "user": "B", "amount": 300, "type": "credit"},
+    {"id": 6, "user": "A", "amount": 30, "type": "debit"}
+]
+
+# 1. Compute net balance per user
+balances = {}
+for transaction in transactions:
+    user = transaction["user"]
+    amount = transaction["amount"]
+    trans_type = transaction["type"]
+
+    if user not in balances:
+        balances[user] = 0
+
+    if trans_type == "credit":
+        balances[user] += amount
+    elif trans_type == "debit":
+        balances[user] -= amount
+
+# 2. Return the top 2 users by balance
+top_users = sorted(balances.items(), key=lambda item: item[1], reverse=True)[:2]
+
+print("User balances:", balances)
+print("Top 2 users by balance:", top_users)
 
