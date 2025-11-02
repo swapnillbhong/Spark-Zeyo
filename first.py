@@ -30,6 +30,7 @@ os.environ['JAVA_HOME'] = r'C:\Users\Swapnil Bhong\.jdks\corretto-1.8.0_452'    
 
 #os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.datastax.spark:spark-cassandra-connector_2.12:3.5.1 pyspark-shell'
 #os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-avro_2.12:3.5.4 pyspark-shell'
+#os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.0 pyspark-shell'git
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.0 pyspark-shell'
 
 
@@ -40,4 +41,38 @@ spark = SparkSession.builder.getOrCreate()
 
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
+
+kafkadf = (
+
+
+
+    spark
+
+    .readStream
+
+    .format("kafka")
+
+    .option("kafka.bootstrap.servers","localhost:9092")
+
+    .option("subscribe","sk")
+
+    .option("startingOffsets","earliest")
+
+    .load()
+
+
+
+)
+
+
+
+
+
+castdf = kafkadf.withColumn("value", expr("cast(value as string)")).select("value").withColumn("Signature", expr("'SaiAditya'"))
+
+
+
+
+
+castdf.writeStream.format("console").start().awaitTermination()
 
