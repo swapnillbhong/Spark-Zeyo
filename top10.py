@@ -65,18 +65,13 @@ df = spark.createDataFrame(data=data, schema=schema)
 
 df.show()
 
+
 day_df = df.filter(col("date")=="2025-11-04")
 day_df.show()
 
-agg_df = day_df.groupby("product_id").agg(sum("quantity").alias("total_quantity"))
+agg_df = day_df.groupBy("product_id").agg(sum("quantity").alias("total_sold"))
 agg_df.show()
 
-top_10 = agg_df.orderBy(col("total_quantity").desc()).limit(10)
+top_10 = agg_df.orderBy(col("total_sold").desc()).limit(10)
 top_10.show()
-
-
-
-
-
-
 
