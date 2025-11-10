@@ -64,13 +64,5 @@ columns = ["RollNo", "Subject", "Marks"]
 df = spark.createDataFrame(data, columns)
 df.show()
 
-pivotdf = df.groupBy("RollNo").pivot("Subject",['Maths', 'Science', 'English', 'Hindi']).agg(first("Marks")).fillna(0)
+pivotdf = df.groupBy("RollNo").pivot("Subject").agg(first("Marks")).fillna(0)
 pivotdf.show()
-
-finaldf = (pivotdf.withColumnRenamed("English","Englishmarks")
-           .withColumnRenamed("Hindi","Hindimarks")
-           .withColumnRenamed("Maths","mathsmarks")
-           .withColumnRenamed("Science","Sciencemarks"))
-finaldf.show()
-
-
