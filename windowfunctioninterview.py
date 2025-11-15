@@ -69,7 +69,11 @@ from pyspark.sql.window import Window
 
 createwin = Window.partitionBy("employee_id").orderBy(col("date").desc())
 
-rankdf = df.withColumn("Dense_rank",dense_rank().over(createwin))
+windf = df.withColumn("Dense_rank",dense_rank().over(createwin))
 
-finaldf = rankdf.filter("Dense_rank = 1").drop("Dense_rank")
+windf.show()
+
+finaldf = windf.filter("Dense_rank== 1").drop("Dense_rank")
 finaldf.show()
+
+
