@@ -37,8 +37,6 @@ os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.datastax.spark:spark-cassand
 conf = SparkConf().setAppName("pyspark").setMaster("local[*]").set("spark.driver.host","localhost").set("spark.default.parallelism", "1")
 sc = SparkContext(conf=conf)
 
-spark = SparkSession.builder.getOrCreate()
-
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
