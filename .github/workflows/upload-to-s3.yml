@@ -1,0 +1,19 @@
+name: Upload Python files to S3
+on:
+  push:
+    branches: [ master ]
+jobs:
+  upload-python-to-s3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - run: sudo apt-get update && sudo apt-get install -y awscli
+      - run: |
+          mkdir py-only
+          find . -name "*.py" -exec cp {} py-only/ \;
+      - run: aws s3 sync py-only s3://${{ secrets.AWS_S3_BUCKET }} --delete
