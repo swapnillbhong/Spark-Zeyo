@@ -10,6 +10,16 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - run: sudo apt-get install -y awscli
-      - run: mkdir py-only && find . -name "*.py" -exec cp {} py-only/ \;
-      - run: aws s3 sync py-only/ s3://${{ secrets.AWS_S3_BUCKET }}/ --delete
+      - uses: aws-actions/amazon-s3-sync@v2
+        with:
+          source: .
+          destination: s3://${{ secrets.AWS_S3_BUCKET }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          list-objects: true
+          delete: true
+          exclude: |
+            .git/**
+            .github/**
+            node_modules/**
+            *.log
+      - run: aws s3 ls s3://${{ secrets.AWS_S3_BUCKET }} --recursive
